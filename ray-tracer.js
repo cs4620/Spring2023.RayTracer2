@@ -66,12 +66,12 @@ class Sphere {
     this.radius = radius;
   }
   /**
-   * Calculate the intersection point between a ray and
+   * Calculates the intersection point between a ray and
    * this sphere.
-   * @param {Vector3} o - The origin of the ray in question.
-   * @param {Vector3} d - The direction of the ray in question.
+   * @param {Vector3} o - The origin of the ray
+   * @param {Vector3} d - The direction of the ray
    * @returns undefined if there are no real roots or both roots are 
-   * behind the ray origin. The coordinate of the closest collision point otherwise.
+   * behind the ray origin, the coordinate of the closest collision point otherwise
    * */
   intersect(o, d) {
     let c = this.center;
@@ -83,14 +83,14 @@ class Sphere {
     let C = o.dot(o) - r ** 2;
 
     let discriminant = B ** 2 - 4 * A * C;
-    
+
     if (discriminant <= 0) {
       return undefined;
     }
     let sqrt = Math.sqrt(discriminant);
     let t1 = (-B - sqrt) / (2 * A)
     let t2 = (-B + sqrt) / (2 * A)
-    
+
     let t;
 
     //If both collision points are positive, choose the closest one
@@ -103,7 +103,7 @@ class Sphere {
       if (t1 > 0)
         t = t1;
       //Check if t2 is positive
-      else if(t2 > 0)
+      else if (t2 > 0)
         t = t2;
       //They are both behind the ray origin
       else
@@ -119,8 +119,10 @@ class Sphere {
  * */
 class Vector3 {
   /**
-   * Create a new Vector3.
-   * Any parameters not supplied default to 0
+   * Creates a new Vector3.
+   * <p>
+   * Any parameters not supplied defaults to 0.
+   * </p>
    * */
   constructor(x = 0, y = 0, z = 0) {
     this.x = x;
@@ -129,59 +131,78 @@ class Vector3 {
     Object.freeze(this);
   }
   /**
-   * Create a new Vector3 of length 1
-   * @returns {Vector3} A new Vector3 of length 1.
+   * Creates a new Vector3 of length 1 from this vector.
+   * @returns {Vector3} The normalized vector.
    * */
   normalize() {
     let length = this.length()
     return new Vector3(this.x / length, this.y / length, this.z / length);
   }
-
+  /**
+   * Calculates the length of this vector.
+   * @returns The length of the vector
+   */
   length() {
     return Math.sqrt(this.x ** 2 + this.y ** 2 + this.z ** 2)
   }
+  /**
+   * Calculates the dot product of this and another vector
+   * @param {Vector3} other The other vector
+   * @returns The dot product of the two vectors
+   */
   dot(other) {
     return this.x * other.x + this.y * other.y + this.z * other.z;
   }
+  /**
+   * Calculates the cross product of this and another vector
+   * @param {Vector3} other The other vector
+   * @returns The cross product of the two vectors stored in a new Vector3
+   */
   cross(other) {
     return new Vector3(this.y * other.z - this.z * other.y, this.z * other.x - this.x, other.z + this.x * other.y - this.y * other.x);
   }
+  /**
+   * Create a new Vector3 that is the sum of this and another vector.
+   * @param {Vector3} other The other vector
+   * @returns A new Vector3 with the sume of the vectors.
+   */
   add(other) {
     return new Vector3(this.x + other.x, this.y + other.y, this.z + other.z);
   }
+  /**
+   * Creates a new Vector3 that is the inverse of this.
+   * @returns A new Vector 3
+   */
   negate() {
     return new Vector3(-this.x, -this.y, -this.z);
   }
+  /**
+   * Creates a new Vector3 that is the difference between this and another vector.
+   * @param {Vector3} other The other vector
+   * @returns A new Vector3 that is the difference
+   */
   minus(other) {
     return this.add(other.negate());
   }
 }
 
-function main() {
-  let width = 100;
-  let height = 100;
+/**
+ * Run our ray tracer
+ * @param {Number} width The width of the rendederd image
+ * @param {Number} height The height of the rendered image
+ */
+function main(width=100, height=100) {
+  
+  //Create a new image object to save as a file
   let image = new Image(width, height);
 
+  //Setup the canvas element for realtime results
   let canvas = document.querySelector("canvas");
   canvas.width = width;
   canvas.height = height;
   let ctx = canvas.getContext("2d")
 
-  //Test code
-  let v3 = new Vector3(1, 2, 3);
-  v3.x = 0;
-  console.log(v3)
-  let v4 = v3.normalize()
-  console.log(v4)
-
-  console.log(new Vector3(1, 1, 1).dot(new Vector3(0, 2, 0)))
-  console.log(new Vector3(0, 0, 1).cross(new Vector3(1, 0, 0)))
-
-  let sphere = new Sphere(new Vector3(-2, 0, 0), 1);
-  let rayOrigin = new Vector3(0, 0, 0);
-  let rayDirection = new Vector3(-1, 0, 0);
-  let collision = sphere.intersect(rayOrigin, rayDirection)
-  console.log(collision);
+  
 
   //Ray Tracer starts
 
@@ -200,12 +221,12 @@ function main() {
 
       let rayTracedPixel = new Pixel(0, 0, 0);
 
-      if(c){
+      if (c) {
         let normal = c.normalize()
-        let dot = normal.dot(new Vector3(0,-1,0));
-        if(dot <= 0)
+        let dot = normal.dot(new Vector3(0, -1, 0));
+        if (dot <= 0)
           dot = 0
-        rayTracedPixel = new Pixel(255 * dot,255*dot,255*dot);
+        rayTracedPixel = new Pixel(255 * dot, 255 * dot, 255 * dot);
       }
 
       image.setPixel(x, y, rayTracedPixel);
@@ -263,4 +284,22 @@ function main() {
 
 }
 
+function test(){
+  //Test code
+  let v3 = new Vector3(1, 2, 3);
+  v3.x = 0;
+  console.log(v3)
+  let v4 = v3.normalize()
+  console.log(v4)
+
+  console.log(new Vector3(1, 1, 1).dot(new Vector3(0, 2, 0)))
+  console.log(new Vector3(0, 0, 1).cross(new Vector3(1, 0, 0)))
+
+  let sphere = new Sphere(new Vector3(-2, 0, 0), 1);
+  let rayOrigin = new Vector3(0, 0, 0);
+  let rayDirection = new Vector3(-1, 0, 0);
+  let collision = sphere.intersect(rayOrigin, rayDirection)
+  console.log(collision);
+}
+test();
 main();
