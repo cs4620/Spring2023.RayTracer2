@@ -175,7 +175,7 @@ class Vector3 {
    * @returns The cross product of the two vectors stored in a new Vector3
    */
   cross(other) {
-    return new Vector3(this.y * other.z - this.z * other.y, this.z * other.x - this.x, other.z + this.x * other.y - this.y * other.x);
+    return new Vector3(this.y * other.z - this.z * other.y, this.z * other.x - this.x * other.z, this.x * other.y - this.y * other.x);
   }
   /**
    * Create a new Vector3 that is the sum of this and another vector.
