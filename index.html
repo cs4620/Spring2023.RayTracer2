@@ -3,14 +3,28 @@
 
 <head>
   <title>Ray Tracer</title>
+  <style>
+    html,body {
+      background-color: black;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* See https://www.w3schools.com/css/tryit.asp?filename=trycss3_flexbox_perfect_center */
+    .flex-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+  </style>
 </head>
 
 <body>
-  <canvas id="canvas"></canvas>
-  <script src="ray-tracer.js">
-
-    
-  </script>
+  <div class="flex-container">
+    <canvas id="canvas"></canvas>
+  </div>
+  <script src="ray-tracer.js"></script>
 </body>
 
 </html>
