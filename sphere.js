@@ -21,33 +21,23 @@ class Sphere {
    * behind the ray origin, the coordinate of the closest collision point otherwise
    * */
   intersect(o, d) {
-
-    //Grab the sphere center and radius
     let c = this.center;
     let r = this.radius;
-    let oMinusC = o.minus(c);
-    let oMinusCSquared = oMinusC.dot(oMinusC);
 
-    //Calculate the discriminant
-    let discriminant = (d.dot(oMinusC)) ** 2 -(oMinusCSquared - r**2)
 
-    //If the discriminant is not positive, 
-    //We either don't have any collisions or we 
-    //have a perfect "graze". 
-    //In either case we indicate there was not a 
-    //colission by returning undefined
+    let A = 1;
+    let B = 2 * o.dot(d);
+    let C = o.dot(o) - r ** 2;
+
+    let discriminant = B ** 2 - 4 * A * C;
+    
     if (discriminant <= 0) {
       return undefined;
     }
-
-    //Calculate the squart root of the determinant
-    //and then store the two possible t values
     let sqrt = Math.sqrt(discriminant);
-    let t1 = -d.dot(oMinusC) - sqrt
-    let t2 = -d.dot(oMinusC) + sqrt
-
-    //Initialize the t value we used to calculate
-    //our return value
+    let t1 = (-B - sqrt) / (2 * A)
+    let t2 = (-B + sqrt) / (2 * A)
+    
     let t;
 
     //If both collision points are positive, choose the closest one
@@ -60,14 +50,13 @@ class Sphere {
       if (t1 > 0)
         t = t1;
       //Check if t2 is positive
-      else if (t2 > 0)
+      else if(t2 > 0)
         t = t2;
       //They are both behind the ray origin
       else
         return undefined; //The only collision points were behind the origin of the ray
     }
 
-    //Multiply the direction by t and then add it to the origin
-    return {t, v:new Vector3(o.x + t * d.x, o.y + t * d.y, o.z + t * d.z)};
+    return new Vector3(o.x + t * d.x, o.y + t * d.y, o.z + t * d.z);
   }
 }
