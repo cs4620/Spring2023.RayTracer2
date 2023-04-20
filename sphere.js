@@ -68,6 +68,6 @@ class Sphere {
     }
 
     //Multiply the direction by t and then add it to the origin
-    return new Vector3(o.x + t * d.x, o.y + t * d.y, o.z + t * d.z);
+    return {t, v:new Vector3(o.x + t * d.x, o.y + t * d.y, o.z + t * d.z)};
   }
 }
